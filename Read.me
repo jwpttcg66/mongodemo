@@ -1,0 +1,16 @@
+需要现建立数据库
+use test_mongo
+为集合创建用户
+db.createUser(
+     {
+       user: "test_jwp",
+       pwd: "123456",
+       roles: ["readWrite"]
+     }
+)
+
+3.登录用户，并测试是否好用
+db.auth("test_jwp", "123456")
+db.createCollection("logs")
+db.logs.insert( { name: "testLog", age: 3} )
+db.logs.find()

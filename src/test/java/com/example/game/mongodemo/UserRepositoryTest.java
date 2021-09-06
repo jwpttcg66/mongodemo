@@ -53,6 +53,22 @@ public class UserRepositoryTest {
         user= userDao.findUserByUserName("天空");
         System.out.println("user update is "+user);
     }
+
+    @Test
+    public void testUserNameLength(){
+        User user=new User();
+        user.setId(200l);
+        StringBuilder builder = new StringBuilder();
+        for(int i = 0; i < 1000000; i++){
+            builder.append("test"+i);
+        }
+        String name = builder.toString();
+        user.setUserName(name);
+        user.setPassWord("fffxxxx");
+        userDao.saveUser(user);
+        user= userDao.findUserByUserName(name);
+        System.out.println("user updateString is "+user.getUserName().length());
+    }
 //
 //    @Test
 //    public void deleteUserById(){

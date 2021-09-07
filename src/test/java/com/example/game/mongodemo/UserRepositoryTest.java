@@ -2,12 +2,19 @@ package com.example.game.mongodemo;
 
 import com.example.game.mongodemo.model.User;
 import com.example.game.mongodemo.repository.UserRepository;
+import com.mongodb.BasicDBList;
+import com.mongodb.BasicDBObject;
+import com.mongodb.DBObject;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
+
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.List;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -56,19 +63,36 @@ public class UserRepositoryTest {
 
     @Test
     public void testUserNameLength(){
-        User user=new User();
-        user.setId(200l);
-        StringBuilder builder = new StringBuilder();
-        for(int i = 0; i < 1000000; i++){
-            builder.append("test"+i);
-        }
-        String name = builder.toString();
-        user.setUserName(name);
-        user.setPassWord("fffxxxx");
-        userDao.saveUser(user);
-        user= userDao.findUserByUserName(name);
-        System.out.println("user updateString is "+user.getUserName().length());
+//        User user=new User();
+//        user.setId(200l);
+//        StringBuilder builder = new StringBuilder();
+//        for(int i = 0; i < 1000000; i++){
+//            builder.append("test"+i);
+//        }
+//        String name = builder.toString();
+//        user.setUserName(name);
+//        user.setPassWord("fffxxxx");
+//        userDao.saveUser(user);
+//        user= userDao.findUserByUserName(name);
+//        System.out.println("user updateString is "+user.getUserName().length());
     }
+
+    @Test
+    public  void testUserArray(){
+        User user=new User();
+        user.setId(300l);
+        user.setUserName("task");
+        user.setPassWord("fffxxxx");
+        List<DBObject> list = new ArrayList<DBObject>();
+        for(int i = 0; i < 200000; i++) {
+            list.add(new BasicDBObject("id", String.valueOf(i)));
+        }
+        user.setTasks(list);
+        userDao.saveUser(user);
+        user= userDao.findUserByUserName("task");
+        System.out.println("user taskList is " + user.getTasks().size());
+    }
+
 //
 //    @Test
 //    public void deleteUserById(){
